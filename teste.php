@@ -12,6 +12,12 @@ error_reporting(E_ALL);
 
 // Configurações do Azure Blob Storage
 $connectionString = getenv('AZURE_STORAGE_CONNECTION_STRING');
+if (!$connectionString) {
+    echo "A string de conexão está vazia ou não foi encontrada.";
+    exit;
+} else {
+    echo "String de conexão lida com sucesso.";
+}
 $containerName = "prova2";
 
 // Verifica se o formulário foi enviado e se há um arquivo de imagem
