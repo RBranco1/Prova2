@@ -15,7 +15,7 @@
         }
 
         h1 {
-            color: #4CAF50;
+            color: #37BBEE;
             margin-top: 50px;
         }
 
@@ -38,13 +38,13 @@
             font-weight: bold;
             color: white;
             text-decoration: none;
-            background-color: #4CAF50;
+            background-color: #37BBEE;
             border-radius: 5px;
             transition: background-color 0.3s ease;
         }
 
         a:hover {
-            background-color: #45a049;
+            background-color: #0C59A2;
         }
 
         /* Estilo para o formulário */
@@ -57,6 +57,7 @@
 
     <div class="container">
         <h1>Bem-vindo ao Sistema de Cadastro</h1>
+        <img src="logo.png" alt="Logo do Sistema" style="max-width: 200px; margin-bottom: 20px;">
 
         <form>
             <a href="front.php">Tela de Cadastro</a>

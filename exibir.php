@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualização de Imagens</title>
+    <title>Cadastro de Pessoa com Imagem</title>
     <style>
         /* Definições gerais */
         body {
@@ -15,7 +15,7 @@
         }
 
         h1 {
-            color: #4CAF50;
+            color: #37BBEE;
             margin-top: 50px;
         }
 
@@ -29,25 +29,11 @@
             border-radius: 8px;
         }
 
-        /* Estilo para as imagens */
-        .image-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+        /* Estilo para o formulário */
+        form {
             margin-top: 20px;
         }
-
-        .image-container div {
-            margin: 10px;
-            text-align: center;
-        }
-
-        .image-container img {
-            max-width: 200px;
-            max-height: 200px;
-            border-radius: 5px;
-        }
-
+        
         .back-btn {
             display: inline-block;
             margin-top: 20px;
@@ -55,50 +41,31 @@
             font-size: 16px;
             font-weight: bold;
             color: white;
-            background-color: #333;
+            background-color: #37BBEE;
             text-decoration: none;
             border-radius: 5px;
             transition: background-color 0.3s ease;
         }
 
         .back-btn:hover {
-            background-color: #555;
+            background-color: #0C59A2;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Imagens no banco de dados</h1>
+    <div class="container">
+        <h1>Bem-vindo ao Sistema</h1>
 
-    <!-- Listagem de imagens -->
-    <div class="image-container">
-        <?php
-        // Caminho para a pasta de uploads
-        $uploadDir = __DIR__ . '/uploads/';
+        <!-- Aqui você pode exibir os dados do banco -->
+        <div id="dados">
+            <p>Aqui estarão os dados do banco de dados</p>
+            <!-- Código para exibir dados -->
+        </div>
 
-        // Verifica se a pasta existe
-        if (is_dir($uploadDir)) {
-            // Escaneia a pasta para obter arquivos
-            $files = scandir($uploadDir);
-
-            // Filtra os arquivos para exibir apenas imagens
-            foreach ($files as $file) {
-                // Verifica se o arquivo é uma imagem (ajuste conforme necessário)
-                if (preg_match('/\.(jpg|jpeg|png|gif)$/i', $file)) {
-                    echo "<div>";
-                    echo "<img src='uploads/$file' alt='" . htmlspecialchars($file) . "' />";
-                    echo "<p>" . htmlspecialchars($file) . "</p>";
-                    echo "</div>";
-                }
-            }
-        } else {
-            echo "A pasta de uploads não existe.";
-        }
-        ?>
+        <!-- Botão de Voltar -->
+         <a href="index.php" class="back-btn">Voltar para a Página Inicial</a>
     </div>
-</div>
-
-<a href="front.php" class="back-btn">Voltar para a Página Inicial</a>
+        
 </body>
 </html>

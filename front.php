@@ -41,7 +41,7 @@
         }
 
         input[type="submit"] {
-            background-color: #4CAF50;
+            background-color: #37BBEE;
             color: white;
             border: none;
             padding: 15px;
@@ -52,7 +52,7 @@
         }
 
         input[type="submit"]:hover {
-            background-color: #45a049;
+            background-color: #0C59A2;
         }
 
         .container {
@@ -65,16 +65,17 @@
             margin-top: 20px;
             padding: 10px 20px;
             font-size: 16px;
+            margin-left: 70px;
             font-weight: bold;
             color: white;
-            background-color: #333;
+            background-color: #37BBEE;
             text-decoration: none;
             border-radius: 5px;
             transition: background-color 0.3s ease;
         }
 
         .back-btn:hover {
-            background-color: #555;
+            background-color: #0C59A2;
         }
     </style>
 </head>
@@ -115,10 +116,11 @@
 
         <div class="container">
             <input type="submit" value="Cadastrar">
-        </div>
+        </div> 
+        <a href="index.php" class="back-btn">Voltar para a Página Inicial</a>
     </form>
 
-    <a href="index.php" class="back-btn">Voltar para a Página Inicial</a>
+   
 
 </body>
 </html>
