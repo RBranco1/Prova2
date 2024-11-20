@@ -69,48 +69,31 @@
 <body>
 
 <div class="container">
-    <h1>Imagens no Blob Storage</h1>
+    <h1>Imagens na Pasta Upload</h1>
 
     <!-- Listagem de imagens -->
     <div class="image-container">
         <?php
-        require 'vendor/autoload.php';
+        // Caminho para a pasta de uploads
+        $uploadDir = __DIR__ . '/uploads/';
 
-        use MicrosoftAzure\Storage\Blob\BlobRestProxy;
-        use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
+        // Verifica se a pasta existe
+        if (is_dir($uploadDir)) {
+            // Escaneia a pasta para obter arquivos
+            $files = scandir($uploadDir);
 
-        // Configurações de exibição de erros (para debug)
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-        error_reporting(E_ALL);
-
-        // Configurações do Azure Blob Storage
-        $connectionString = getenv('AZURE_STORAGE_CONNECTION_STRING');
-        $containerName = "prova2";
-
-        // Listar todas as imagens no container
-        try {
-            $blobClient = BlobRestProxy::createBlobService($connectionString);
-            $result = $blobClient->listBlobs($containerName);
-            $blobs = $result->getBlobs();
-
-            if (count($blobs) > 0) {
-                foreach ($blobs as $blob) {
-                    $blobUrl = $blobClient->getBlobUrl($containerName, $blob->getName());
+            // Filtra os arquivos para exibir apenas imagens
+            foreach ($files as $file) {
+                // Verifica se o arquivo é uma imagem (ajuste conforme necessário)
+                if (preg_match('/\.(jpg|jpeg|png|gif)$/i', $file)) {
                     echo "<div>";
-                    echo "<img src='$blobUrl' alt='" . htmlspecialchars($blob->getName()) . "' />";
-                    echo "<p>" . htmlspecialchars($blob->getName()) . "</p>";
+                    echo "<img src='uploads/$file' alt='" . htmlspecialchars($file) . "' />";
+                    echo "<p>" . htmlspecialchars($file) . "</p>";
                     echo "</div>";
-                    // Debug: Exibir a URL do blob
-                    // echo "<p>URL: <a href='$blobUrl' target='_blank'>$blobUrl</a></p>";
                 }
-            } else {
-                echo "Nenhuma imagem encontrada no container.";
             }
-        } catch(ServiceException $e) {
-            $code = $e->getCode();
-            $error_message = $e->getMessage();
-            echo "Erro ao listar imagens no Azure Blob Storage: $error_message";
+        } else {
+            echo "A pasta de uploads não existe.";
         }
         ?>
     </div>
