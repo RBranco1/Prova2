@@ -5,15 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Pessoa com Imagem</title>
     <style>
-        body {
+          body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            padding: 20px;
+            --s: 200px;
+            /* control the size */
+            --c1: #30A9E8;
+            --c2: #3CCBF4;
+            --c3: #0078D4;
+
+            background: repeating-conic-gradient(from 30deg,
+                    #0000 0 120deg,
+                    var(--c3) 0 180deg) calc(0.5 * var(--s)) calc(0.5 * var(--s) * 0.577),
+                repeating-conic-gradient(from 30deg,
+                    var(--c1) 0 60deg,
+                    var(--c2) 0 120deg,
+                    var(--c3) 0 180deg);
+            background-size: var(--s) calc(var(--s) * 0.577);
+            margin: 100px;
+            padding: 0;
+            text-align: center;
         }
 
-        h1 {
+        h2 {
             text-align: center;
-            color: #333;
+            color: #37BBEE;
         }
 
         form {
@@ -53,6 +68,7 @@
 
         input[type="submit"]:hover {
             background-color: #0C59A2;
+            scale: 0.9;
         }
 
         .container {
@@ -65,7 +81,7 @@
             margin-top: 20px;
             padding: 10px 20px;
             font-size: 16px;
-            margin-left: 70px;
+            margin-left: 10px;
             font-weight: bold;
             color: white;
             background-color: #37BBEE;
@@ -76,27 +92,28 @@
 
         .back-btn:hover {
             background-color: #0C59A2;
+            scale: 1.1;
         }
     </style>
 </head>
 <body>
 
-    <h1>Formulário de Cadastro com Imagem</h1>
-
     <form action="teste.php" method="POST" enctype="multipart/form-data">
+         <h2>Formulário de Cadastro com Imagem</h2>
+
         <div class="container">
             <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" required>
+            <input type="text" id="nome" name="nome" placeholder="Joao batista de andrade"required>
         </div>
 
         <div class="container">
             <label for="email">E-mail:</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" placeholder="usuario@gmail.com" required>
         </div>
 
         <div class="container">
             <label for="telefone">Telefone:</label>
-            <input type="tel" id="telefone" name="telefone" required>
+            <input type="tel" id="telefone" name="telefone" placeholder="(11) 123456789" required>
         </div>
 
         <div class="container">
@@ -106,12 +123,12 @@
 
         <div class="container">
             <label for="endereco">Endereço:</label>
-            <textarea id="endereco" name="endereco" rows="4" required></textarea>
+            <textarea id="endereco" name="endereco" rows="4" placeholder="rua joao peixe 155"required></textarea>
         </div>
 
         <div class="container">
             <label for="imagem">Escolha uma Imagem:</label>
-            <input type="file" id="imagem" name="image" accept="image/*">
+            <input type="file" id="imagem" name="image" accept="image/*" required>
         </div>
 
         <div class="container">

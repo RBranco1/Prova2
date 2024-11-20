@@ -23,15 +23,30 @@ echo <<<HTML
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultado do Cadastro</title>
     <style>
-        body {
+         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            padding: 20px;
+            --s: 200px;
+            /* control the size */
+            --c1: #30A9E8;
+            --c2: #3CCBF4;
+            --c3: #0078D4;
+
+            background: repeating-conic-gradient(from 30deg,
+                    #0000 0 120deg,
+                    var(--c3) 0 180deg) calc(0.5 * var(--s)) calc(0.5 * var(--s) * 0.577),
+                repeating-conic-gradient(from 30deg,
+                    var(--c1) 0 60deg,
+                    var(--c2) 0 120deg,
+                    var(--c3) 0 180deg);
+            background-size: var(--s) calc(var(--s) * 0.577);
+            margin: 100px;
+            padding: 0;
+            text-align: center;
         }
 
         h1 {
-            text-align: center;
-            color: #333;
+            color: #37BBEE;
+            margin-top: 50px;
         }
 
         .content {
@@ -66,12 +81,13 @@ echo <<<HTML
 
         .back-btn:hover {
             background-color: #0C59A2;
+            scale: 1.1;
         }
     </style>
 </head>
 <body>
-    <h1>Resultado do Cadastro</h1>
     <div class="content">
+    <h1>Resultado do Cadastro</h1>
 HTML;
 
 // Verifica se o formulário foi enviado e se há um arquivo de imagem
