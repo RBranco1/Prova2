@@ -157,6 +157,8 @@
                     echo "<img src='$blobUrl' alt='" . htmlspecialchars($blob->getName()) . "' />";
                     echo "<p>" . htmlspecialchars($blob->getName()) . "</p>";
                     echo "</div>";
+                    // Debug: Exibir a URL do blob
+                    echo "<p>URL: <a href='$blobUrl' target='_blank'>$blobUrl</a></p>";
                 }
             } else {
                 echo "Nenhuma imagem encontrada no container.";
