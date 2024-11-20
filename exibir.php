@@ -33,7 +33,7 @@
         form {
             margin-top: 20px;
         }
-        
+
         .back-btn {
             display: inline-block;
             margin-top: 20px;
@@ -50,21 +50,126 @@
         .back-btn:hover {
             background-color: #555;
         }
+
+        /* Estilo para as imagens */
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .image-container div {
+            margin: 10px;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Bem-vindo ao Sistema</h1>
+<div class="container">
+    <h1>Bem-vindo ao Sistema</h1>
 
-        <!-- Aqui você pode exibir os dados do banco -->
-        <div id="dados">
-            <p>Aqui estarão os dados do banco de dados</p>
-            <!-- Código para exibir dados -->
-        </div>
+    <!-- Formulário de upload de imagem -->
+    <form action="" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Enviar Imagem</button>
+    </form>
 
-        <!-- Botão de Voltar -->
+    <!-- Listagem de imagens -->
+    <div class="image-container">
+        <?php
+        require 'vendor/autoload.php';
+
+        use MicrosoftAzure\Storage\Blob\BlobRestProxy;
+        use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
+        use MicrosoftAzure\Storage\Blob\Models\CreateBlockBlobOptions;
+
+        // Configurações de exibição de erros (para debug)
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
+        // Configurações do Azure Blob Storage
+        $connectionString = getenv('AZURE_STORAGE_CONNECTION_STRING');
+        $containerName = "prova2";
+
+        // Verifica se o formulário foi enviado e se há um arquivo de imagem
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['image'])) {
+            // Caminho absoluto da pasta de upload
+            $uploadDir = __DIR__ . '/uploads/';
+            $uploadFile = $uploadDir . basename($_FILES['image']['name']);
+
+            // Verifica se a pasta de uploads existe
+            if (!is_dir($uploadDir)) {
+                echo "A pasta de uploads não existe.";
+                exit;
+            }
+
+            // Verifica se houve erro no upload
+            if ($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+                echo "Erro no upload: " . $_FILES['image']['error'];
+                exit;
+            }
+
+            // Verifica se a imagem foi enviada corretamente
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
+                echo "Imagem enviada com sucesso!<br>";
+
+                // Enviar para o Azure Blob Storage
+                try {
+                    $blobClient = BlobRestProxy::createBlobService($connectionString);
+                    $content = fopen($uploadFile, "r");
+                    $options = new CreateBlockBlobOptions();
+                    $options->setContentType(mime_content_type($uploadFile));
+
+                    $blobClient->createBlockBlob($containerName, basename($_FILES['image']['name']), $content, $options);
+                    echo "Imagem enviada para o Azure Blob Storage!<br>";
+                } catch(ServiceException $e){
+                    $code = $e->getCode();
+                    $error_message = $e->getMessage();
+                    echo "Erro ao enviar para o Azure Blob Storage: $error_message";
+                }
+
+            } else {
+                echo "Erro no upload da imagem.";
+            }
+        } else {
+            echo "Nenhuma imagem enviada.";
+        }
+
+        // Listar todas as imagens no container
+        try {
+            $blobClient = BlobRestProxy::createBlobService($connectionString);
+            $result = $blobClient->listBlobs($containerName);
+            $blobs = $result->getBlobs();
+
+            if (count($blobs) > 0) {
+                foreach ($blobs as $blob) {
+                    $blobUrl = $blobClient->getBlobUrl($containerName, $blob->getName());
+                    echo "<div>";
+                    echo "<img src='$blobUrl' alt='" . htmlspecialchars($blob->getName()) . "' />";
+                    echo "<p>" . htmlspecialchars($blob->getName()) . "</p>";
+                    echo "</div>";
+                }
+            } else {
+                echo "Nenhuma imagem encontrada no container.";
+            }
+        } catch(ServiceException $e) {
+            $code = $e->getCode();
+            $error_message = $e->getMessage();
+            echo "Erro ao listar imagens no Azure Blob Storage: $error_message";
+        }
+        ?>
     </div>
-        <a href="front.php" class="back-btn">Voltar para a Página Inicial</a>
+</div>
+
+<a href="front.php" class="back-btn">Voltar para a Página Inicial</a>
 </body>
 </html>
