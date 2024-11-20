@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Pessoa com Imagem</title>
+    <title>Visualização de Imagens</title>
     <style>
         /* Definições gerais */
         body {
@@ -29,28 +29,6 @@
             border-radius: 8px;
         }
 
-        /* Estilo para o formulário */
-        form {
-            margin-top: 20px;
-        }
-
-        .back-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            background-color: #333;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .back-btn:hover {
-            background-color: #555;
-        }
-
         /* Estilo para as imagens */
         .image-container {
             display: flex;
@@ -69,18 +47,29 @@
             max-height: 200px;
             border-radius: 5px;
         }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background-color: #555;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Bem-vindo ao Sistema</h1>
-
-    <!-- Formulário de upload de imagem -->
-    <form action="" method="POST" enctype="multipart/form-data">
-        <input type="file" name="image" accept="image/*" required>
-        <button type="submit">Enviar Imagem</button>
-    </form>
+    <h1>Imagens no Blob Storage</h1>
 
     <!-- Listagem de imagens -->
     <div class="image-container">
@@ -89,7 +78,6 @@
 
         use MicrosoftAzure\Storage\Blob\BlobRestProxy;
         use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
-        use MicrosoftAzure\Storage\Blob\Models\CreateBlockBlobOptions;
 
         // Configurações de exibição de erros (para debug)
         ini_set('display_errors', 1);
@@ -99,50 +87,6 @@
         // Configurações do Azure Blob Storage
         $connectionString = getenv('AZURE_STORAGE_CONNECTION_STRING');
         $containerName = "prova2";
-
-        // Verifica se o formulário foi enviado e se há um arquivo de imagem
-        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['image'])) {
-            // Caminho absoluto da pasta de upload
-            $uploadDir = __DIR__ . '/uploads/';
-            $uploadFile = $uploadDir . basename($_FILES['image']['name']);
-
-            // Verifica se a pasta de uploads existe
-            if (!is_dir($uploadDir)) {
-                echo "A pasta de uploads não existe.";
-                exit;
-            }
-
-            // Verifica se houve erro no upload
-            if ($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
-                echo "Erro no upload: " . $_FILES['image']['error'];
-                exit;
-            }
-
-            // Verifica se a imagem foi enviada corretamente
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
-                echo "Imagem enviada com sucesso!<br>";
-
-                // Enviar para o Azure Blob Storage
-                try {
-                    $blobClient = BlobRestProxy::createBlobService($connectionString);
-                    $content = fopen($uploadFile, "r");
-                    $options = new CreateBlockBlobOptions();
-                    $options->setContentType(mime_content_type($uploadFile));
-
-                    $blobClient->createBlockBlob($containerName, basename($_FILES['image']['name']), $content, $options);
-                    echo "Imagem enviada para o Azure Blob Storage!<br>";
-                } catch(ServiceException $e){
-                    $code = $e->getCode();
-                    $error_message = $e->getMessage();
-                    echo "Erro ao enviar para o Azure Blob Storage: $error_message";
-                }
-
-            } else {
-                echo "Erro no upload da imagem.";
-            }
-        } else {
-            echo "Nenhuma imagem enviada.";
-        }
 
         // Listar todas as imagens no container
         try {
@@ -158,7 +102,7 @@
                     echo "<p>" . htmlspecialchars($blob->getName()) . "</p>";
                     echo "</div>";
                     // Debug: Exibir a URL do blob
-                    echo "<p>URL: <a href='$blobUrl' target='_blank'>$blobUrl</a></p>";
+                    // echo "<p>URL: <a href='$blobUrl' target='_blank'>$blobUrl</a></p>";
                 }
             } else {
                 echo "Nenhuma imagem encontrada no container.";
