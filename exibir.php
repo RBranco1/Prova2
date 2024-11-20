@@ -69,7 +69,7 @@
 <body>
 
 <div class="container">
-    <h1>Imagens na Pasta Upload</h1>
+    <h1>Imagens no banco de dados</h1>
 
     <!-- Listagem de imagens -->
     <div class="image-container">
