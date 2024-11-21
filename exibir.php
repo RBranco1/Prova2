@@ -108,8 +108,13 @@
         <h1>Dashboard de Imagens</h1>
 
         <?php
-        // Caminho da pasta de uploads
-        $uploadDir = 'C:/Users/Cadu/devops/Prova2/uploads';
+        // Caminho da pasta de uploads no Azure App Service
+        $uploadDir = '/home/site/uploads';
+
+        // Certifique-se de que a pasta de uploads exista
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
 
         // Exclusão de imagem
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_image'])) {
@@ -133,7 +138,7 @@
             // Exibe as imagens encontradas
             foreach ($images as $image) {
                 $filePath = $uploadDir . '/' . $image;
-                $fileUrl = 'uploads/' . $image; // Atualize conforme o caminho do servidor
+                $fileUrl = 'uploads/' . $image; // Ajuste o caminho de acordo com sua configuração de servidor
 
                 // Verifica se o arquivo é uma imagem
                 if (is_file($filePath) && @getimagesize($filePath)) {
