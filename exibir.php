@@ -109,7 +109,7 @@
 
         <?php
         // Caminho da pasta de uploads no Azure App Service
-        $uploadDir = '/home/site/uploads';
+        $uploadDir = __DIR__ . '/uploads/';
 
         // Certifique-se de que a pasta de uploads exista
         if (!is_dir($uploadDir)) {
